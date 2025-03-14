@@ -38,6 +38,7 @@ Create a .env file in the root directory and add the following:
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/yourDatabaseName
 JWT_SECRET=your_secret_key
+ACCESS_TOKEN_SECRET=jksdisispopooapo
 
 Note: Replace yourDatabaseName with your MongoDB database name.
 
