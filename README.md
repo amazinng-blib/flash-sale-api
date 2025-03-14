@@ -13,12 +13,16 @@ This is an API built using **Express.js**, **TypeScript**, and **MongoDB**. It i
 
 ---
 
+### Documentation URL
+
+Swagger_Url : ['https://github.com/amazinng-blib/flash-sale-api.git/api-docs']
+
 ## Project Setup
 
 ### 1 Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/your-repo.git
+git clone https://github.com/amazinng-blib/flash-sale-api.git
 cd your-repo
 
 ```
