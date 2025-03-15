@@ -9,12 +9,20 @@ export const swaggerOptions: Options = {
     },
     servers: [
       {
+        url: 'https://flash-sale-api.onrender.com/api/v1',
+        desciption: 'Remote server',
+      },
+      {
         url: 'http://localhost:4000/api/v1',
         desciption: 'Local server',
       },
       {
+        url: 'https://flash-sale-api.onrender.com',
+        description: 'Remote WebSocket Server',
+      },
+      {
         url: 'http://localhost:4000/',
-        description: 'WebSocket Server',
+        description: 'Local WebSocket Server',
       },
     ],
     paths: {

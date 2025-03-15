@@ -15,7 +15,7 @@ This is an API built using **Express.js**, **TypeScript**, and **MongoDB**. It i
 
 ### Documentation URL
 
-Swagger_Url : ['https://github.com/amazinng-blib/flash-sale-api.git/api-docs']
+Swagger_Url : ['https://flash-sale-api.onrender.com/api-docs']
 
 ## Project Setup
 
