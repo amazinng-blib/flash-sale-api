@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { User } from '../models/userModel';
 import { handleError } from '../utils/handleError';
-import mongoose from 'mongoose';
 import { AppError } from './errorhandler';
 
 export async function adminMiddleware(

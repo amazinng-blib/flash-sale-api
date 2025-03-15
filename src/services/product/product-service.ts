@@ -1,8 +1,13 @@
 import { AppError } from '../../middleware/errorhandler';
 import { Product } from '../../models/productModel';
+import { zodProductSchemaType } from '../../zodSchema/zodProductSchema';
 
 // Create Product
-export const createProductService = async (data: any) => {
+export const createProductService = async (data: zodProductSchemaType) => {
+  const productExist = await Product.findOne({ name: data.name });
+  if (productExist) {
+    throw new AppError(`Product with this name : "${data.name}" exist`, 400);
+  }
   const product = await Product.create(data);
   return { message: 'Product created successfully', product };
 };

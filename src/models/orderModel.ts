@@ -6,7 +6,7 @@ interface IOrderItem {
 }
 
 interface IOrder extends Document {
-  user: mongoose.Schema.Types.ObjectId;
+  userId: mongoose.Schema.Types.ObjectId;
   items: IOrderItem[];
   totalPrice: number;
   purchaseTime: Date;
@@ -14,7 +14,7 @@ interface IOrder extends Document {
 
 const OrderSchema = new Schema<IOrder>(
   {
-    user: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     items: [
       {
         productId: {

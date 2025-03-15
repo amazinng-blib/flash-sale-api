@@ -3,7 +3,7 @@ export const swaggerOptions: Options = {
   definition: {
     openapi: '3.1.0',
     info: {
-      title: 'Flash sale API',
+      title: 'Flash sale API by ---  Nwankwo Ernest Onyebuchi',
       version: '1.0.0',
       description: 'Flash sales API Test',
     },
@@ -311,20 +311,9 @@ export const swaggerOptions: Options = {
         },
       },
       '/product': {
-        post: {
+        get: {
           tags: ['Product routes'],
           summary: 'Get all products',
-          parameters: [
-            {
-              name: 'id',
-              in: 'path',
-              required: true,
-              schema: {
-                type: 'string',
-              },
-              description: 'Unique ID of the order',
-            },
-          ],
 
           responses: {
             '201': {
@@ -368,6 +357,10 @@ export const swaggerOptions: Options = {
                       format: 'date-time',
                       example: '2025-4-17',
                     },
+                    discount: {
+                      type: 'number',
+                      example: '20',
+                    },
                   },
                 },
               },
@@ -406,6 +399,25 @@ export const swaggerOptions: Options = {
                         example: 'Flash sale ended successfully',
                       },
                     },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
+      '/flash-sale': {
+        get: {
+          tags: ['Flash Sale trigger routes'],
+          summary: 'Get all flash sale  products',
+
+          responses: {
+            '201': {
+              description: 'Product fetched successfully',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/FlashSaleSchema',
                   },
                 },
               },
@@ -476,14 +488,14 @@ export const swaggerOptions: Options = {
           tags: ['Orders routes'],
           summary: 'Get all orders',
           security: [{ bearerAuth: [] }],
-        },
-        responses: {
-          '200': {
-            description: 'Orders fetched successfully',
-            content: {
-              'application/json': {
-                schema: {
-                  $ref: '#/components/schemas/OrderSchema',
+          responses: {
+            '200': {
+              description: 'Orders fetched successfully',
+              content: {
+                'application/json': {
+                  schema: {
+                    $ref: '#/components/schemas/OrderSchema',
+                  },
                 },
               },
             },
@@ -539,12 +551,12 @@ export const swaggerOptions: Options = {
               example: 'StrongPass@123',
               description: 'User password (should be hashed in the backend)',
             },
-            role: {
-              type: 'string',
-              enum: ['ADMIN', 'USER', 'MARKETER'],
-              example: 'USER',
-              description: 'User role, defaults to USER',
-            },
+            // role: {
+            //   type: 'string',
+            //   enum: ['ADMIN', 'USER', 'MARKETER'],
+            //   example: 'USER',
+            //   description: 'User role, defaults to USER',
+            // },
           },
           required: ['name', 'email', 'password'],
         },
@@ -670,11 +682,11 @@ export const swaggerOptions: Options = {
         OrderSchema: {
           type: 'object',
           properties: {
-            user: {
-              type: 'string',
-              format: 'uuid',
-              description: 'User ID who placed the order',
-            },
+            // userId: {
+            //   type: 'string',
+            //   format: 'uuid',
+            //   description: 'User ID who placed the order',
+            // },
             items: {
               type: 'array',
               items: {
@@ -698,24 +710,84 @@ export const swaggerOptions: Options = {
               format: 'double',
               description: 'Total price of the order',
             },
-            purchaseTime: {
-              type: 'string',
-              format: 'date-time',
-              description: 'Time when the order was placed',
-            },
-            createdAt: {
-              type: 'string',
-              format: 'date-time',
-              description: 'Timestamp when the order was created',
-            },
-            updatedAt: {
-              type: 'string',
-              format: 'date-time',
-              description: 'Timestamp when the order was last updated',
-            },
+            // purchaseTime: {
+            //   type: 'string',
+            //   format: 'date-time',
+            //   description: 'Time when the order was placed',
+            // },
+            // createdAt: {
+            //   type: 'string',
+            //   format: 'date-time',
+            //   description: 'Timestamp when the order was created',
+            // },
+            // updatedAt: {
+            //   type: 'string',
+            //   format: 'date-time',
+            //   description: 'Timestamp when the order was last updated',
+            // },
           },
           required: ['user', 'items', 'totalPrice'],
         },
+
+        // FlashSaleSchema: {
+        //   type: 'object',
+        //   properties: {
+        //     productId: {
+        //       type: 'string',
+        //       format: 'ObjectId',
+        //       example: '67d580d1d8bbf838f95f156a',
+        //       description: 'Reference to the product on sale.',
+        //     },
+        //     startTime: {
+        //       type: 'string',
+        //       format: 'date-time',
+        //       example: '2025-03-15T00:00:00.000Z',
+        //       description: 'Start time of the flash sale.',
+        //     },
+        //     endTime: {
+        //       type: 'string',
+        //       format: 'date-time',
+        //       example: '2025-03-16T00:00:00.000Z',
+        //       description: 'End time of the flash sale.',
+        //     },
+        //     discount: {
+        //       type: 'number',
+        //       example: 20,
+        //       description: 'Discount percentage applied to the product.',
+        //     },
+        //     actualPrice: {
+        //       type: 'number',
+        //       example: 100,
+        //       description: 'Original price before discount.',
+        //     },
+        //     currentPrice: {
+        //       type: 'number',
+        //       example: 80,
+        //       description: 'Price after applying the discount.',
+        //     },
+        //     availableStock: {
+        //       type: 'integer',
+        //       example: 200,
+        //       description: 'Number of products available for the flash sale.',
+        //     },
+        //     status: {
+        //       type: 'string',
+        //       enum: ['active', 'ended'],
+        //       example: 'active',
+        //       description: 'Current status of the flash sale.',
+        //     },
+        //   },
+        //   required: [
+        //     'productId',
+        //     'startTime',
+        //     'endTime',
+        //     'discount',
+        //     'actualPrice',
+        //     'currentPrice',
+        //     'availableStock',
+        //     'status',
+        //   ],
+        // },
 
         WebSocketEvents: {
           type: 'object',
@@ -754,12 +826,12 @@ export const swaggerOptions: Options = {
           },
         },
       },
-    },
-    securitySchemes: {
-      bearerAuth: {
-        type: 'http',
-        scheme: 'bearer',
-        bearerFormat: 'JWT',
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
       },
     },
   },

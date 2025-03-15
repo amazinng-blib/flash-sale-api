@@ -6,11 +6,7 @@ import { zodOrderSchemaType } from '../../zodSchema/zodOrderSchema';
 import { io } from '../../sockets/stock.socket';
 
 export const placeOrder = async (input: zodOrderSchemaType) => {
-  if (
-    !input.userId ||
-    !Array.isArray(input.items) ||
-    input.items.length === 0
-  ) {
+  if (!Array.isArray(input.items) || input.items.length === 0) {
     throw new AppError('Invalid order details', 400);
   }
 
@@ -18,14 +14,19 @@ export const placeOrder = async (input: zodOrderSchemaType) => {
   session.startTransaction();
 
   try {
+    const userId = new mongoose.Types.ObjectId(input.userId);
+
     const flashSaleUpdates = [];
     let totalPrice = 0;
     const orderItems = [];
 
     for (const item of input.items) {
+      const productId = new mongoose.Types.ObjectId(item.productId);
+
       const flashSale = await FlashSale.findOne({
-        productId: item.productId,
+        productId,
       }).session(session);
+
       if (!flashSale)
         throw new AppError(`Flash sale not found: ${item.productId}`, 404);
       if (flashSale.availableStock < item.quantity) {
@@ -48,7 +49,7 @@ export const placeOrder = async (input: zodOrderSchemaType) => {
 
       // Store order item
       orderItems.push({
-        product: flashSale._id,
+        productId: flashSale._id,
         quantity: item.quantity,
       });
     }
@@ -61,7 +62,7 @@ export const placeOrder = async (input: zodOrderSchemaType) => {
 
     // Create order with total price
     const order = new Order({
-      user: input.userId,
+      userId,
       items: orderItems,
       totalPrice,
       purchaseTime: new Date(),

@@ -12,7 +12,7 @@ const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
       token,
       process.env.ACCESS_TOKEN_SECRET as Secret
     ) as JwtPayload;
-    req.body.userId = decoded.id.id;
+    req.body.userId = decoded.id;
     next();
   } catch {
     throw new AppError('Invalid token', 401);

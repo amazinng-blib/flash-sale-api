@@ -4,7 +4,7 @@ import { IUser } from '../models/userModel';
 dotenv.config();
 
 export const generateAccessToken = async (user: IUser): Promise<string> => {
-  const payload = { id: user };
+  const payload = { id: user?._id };
   try {
     const accessToken = jwt.sign(
       payload,

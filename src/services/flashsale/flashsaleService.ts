@@ -7,7 +7,11 @@ import schedule from 'node-schedule';
 import { endFlashSaleService } from './endFlashSaleService';
 import { AppError } from '../../middleware/errorhandler';
 
-export const startFlashSaleService = async (startTime: Date, endTime: Date) => {
+export const startFlashSaleService = async (
+  startTime: Date,
+  endTime: Date,
+  discount = 10
+) => {
   const today = new Date();
   today.setHours(0, 0, 0, 0); // Normalize today to midnight
 
@@ -37,13 +41,17 @@ export const startFlashSaleService = async (startTime: Date, endTime: Date) => {
   products.forEach((product) => {
     const flashSaleStock = product.stock >= 200 ? 200 : product.stock;
     if (flashSaleStock > 0) {
+      const discountPercent = discount ?? 10;
+      const discountAmount = (product.price * discountPercent) / 100;
+      const discountedPrice = Math.max(product.price - discountAmount, 0);
+
       flashSaleEntries.push({
         productId: (product._id as mongoose.Types.ObjectId).toString(),
         startTime,
         endTime,
-        discount: 0,
+        discount,
         actualPrice: product.price,
-        currentPrice: product.price,
+        currentPrice: discountedPrice,
         availableStock: flashSaleStock,
         status: 'active',
       });
@@ -67,7 +75,6 @@ export const startFlashSaleService = async (startTime: Date, endTime: Date) => {
   emitFlashSaleEvent('flashSaleStarted', { startTime, endTime });
 
   // **Schedule task to end sale if today is the end time**
-
   if (isEndingToday) {
     console.log('Flash sale will end today at:', endTime);
     schedule.scheduleJob(endTime, async () => {
@@ -76,4 +83,8 @@ export const startFlashSaleService = async (startTime: Date, endTime: Date) => {
   }
 
   return { message: 'Flash sale started successfully', flashSaleEntries };
+};
+
+export const getAllFlashSaleProductsService = async () => {
+  return await FlashSale.find();
 };

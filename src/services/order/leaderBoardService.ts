@@ -2,7 +2,7 @@ import { Order } from '../../models/orderModel';
 
 export async function leaderBoardService() {
   const leaderboard = await Order.find()
-    .populate('user', 'items')
+    .populate('userId', 'items')
     .sort({ purchaseTime: 1 })
     .lean();
 
